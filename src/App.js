@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import './App.css';
 
 function App() {
   const [showPopup, setShowPopup] = useState(false);
   const [popupContent, setPopupContent] = useState({});
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [authMode, setAuthMode] = useState(null);
   const [user, setUser] = useState(null);
   const [businessInfo, setBusinessInfo] = useState({
     name: '',
@@ -15,41 +15,30 @@ function App() {
   const [scrolled, setScrolled] = useState(false);
 
   const services = [
+    
     {
       id: 1,
-      title: "Drag & Drop Builder",
-      description: "Create stunning websites with our intuitive drag-and-drop interface. No coding required!",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-    },
-    {
-      id: 2,
       title: "E-Commerce Solutions",
       description: "Launch your online store with powerful e-commerce tools and seamless payment integrations.",
       image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
     },
     {
-      id: 3,
+      id: 2,
       title: "SEO Optimization",
       description: "Built-in SEO tools to help your website rank higher on search engines and attract more visitors.",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
     },
     {
-      id: 4,
+      id: 3,
       title: "Hosting & Security",
       description: "Reliable hosting with enterprise-grade security to keep your website fast and protected.",
       image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
     },
     {
-      id: 5,
+      id: 4,
       title: "Custom Templates",
       description: "Choose from hundreds of professionally designed templates for any industry.",
       image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-    },
-    {
-      id: 6,
-      title: "24/7 Support",
-      description: "Our expert team is available around the clock to help with any questions.",
-      image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
     }
   ];
 
@@ -67,7 +56,7 @@ function App() {
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-      
+
       // Animation on scroll
       const elements = document.querySelectorAll('.animate-on-scroll');
       elements.forEach(element => {
@@ -101,7 +90,7 @@ function App() {
     // Initialize animations
     handleScroll();
     animateCount();
-    
+
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
@@ -121,23 +110,6 @@ function App() {
 
   const prevSlide = () => {
     setCurrentSlide((prev) => (prev === 0 ? services.length - 3 : prev - 1));
-  };
-
-  const handleAuthSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const credentials = Object.fromEntries(formData.entries());
-
-    if (authMode === 'signup' && credentials.password !== credentials.confirmPassword) {
-      alert("Passwords don't match!");
-      return;
-    }
-
-    setUser({
-      email: credentials.email,
-      name: credentials.name || "User"
-    });
-    setAuthMode(null);
   };
 
   const handleBusinessInfoSubmit = (e) => {
@@ -176,12 +148,12 @@ function App() {
             </div>
           ) : (
             <div className="auth-buttons">
-              <button onClick={() => setAuthMode('login')} className="auth-btn login-btn">
+              <Link to="/login" className="auth-btn login-btn">
                 <i className="fas fa-sign-in-alt"></i> Login
-              </button>
-              <button onClick={() => setAuthMode('signup')} className="auth-btn signup-btn">
+              </Link>
+              <Link to="/signup" className="auth-btn signup-btn">
                 <i className="fas fa-user-plus"></i> Sign Up
-              </button>
+              </Link>
             </div>
           )}
         </nav>
@@ -192,9 +164,9 @@ function App() {
           <h1 className="hero-title animate-fadeIn">Build Your Dream Website</h1>
           <p className="hero-subtitle animate-fadeIn animate-delay-1">No coding needed. Just drag, drop, and launch!</p>
           <div className="hero-buttons animate-fadeIn animate-delay-2">
-            <button className="hero-btn primary" onClick={() => setAuthMode('signup')}>
-              <i className="fas fa-rocket"></i> Get Started Free
-            </button>
+            <Link to="/build" className="hero-btn primary">
+              <i className="fas fa-rocket"></i> Build Yours Now
+            </Link>
             <button className="hero-btn secondary" onClick={() => {
               window.scrollTo({
                 top: document.querySelector('.container').offsetTop - 100,
@@ -211,53 +183,6 @@ function App() {
       </section>
 
       <div className="container animate-on-scroll">
-        {!user && authMode && (
-          <div className="auth-popup">
-            <div className="auth-form">
-              <span className="close" onClick={() => setAuthMode(null)}>×</span>
-              <h2>{authMode === 'login' ? 'Welcome Back!' : 'Create Account'}</h2>
-              <form onSubmit={handleAuthSubmit}>
-                {authMode === 'signup' && (
-                  <div className="form-group">
-                    <label><i className="fas fa-user"></i> Full Name</label>
-                    <input type="text" name="name" placeholder="Enter your name" required />
-                  </div>
-                )}
-                <div className="form-group">
-                  <label><i className="fas fa-envelope"></i> Email</label>
-                  <input type="email" name="email" placeholder="Enter your email" required />
-                </div>
-                <div className="form-group">
-                  <label><i className="fas fa-lock"></i> Password</label>
-                  <input type="password" name="password" placeholder="Enter password" required minLength="6" />
-                </div>
-                {authMode === 'signup' && (
-                  <div className="form-group">
-                    <label><i className="fas fa-lock"></i> Confirm Password</label>
-                    <input type="password" name="confirmPassword" placeholder="Confirm password" required minLength="6" />
-                  </div>
-                )}
-                <button type="submit" className="submit-btn">
-                  {authMode === 'login' ? (
-                    <><i className="fas fa-sign-in-alt"></i> Login</>
-                  ) : (
-                    <><i className="fas fa-user-plus"></i> Sign Up</>
-                  )}
-                </button>
-              </form>
-              <p className="auth-footer">
-                {authMode === 'login' ? "Don't have an account? " : "Already have an account? "}
-                <button 
-                  className="auth-toggle" 
-                  onClick={() => setAuthMode(authMode === 'login' ? 'signup' : 'login')}
-                >
-                  {authMode === 'login' ? 'Sign up here' : 'Login here'}
-                </button>
-              </p>
-            </div>
-          </div>
-        )}
-
         {user && !businessInfo.collected && (
           <div className="business-info-popup">
             <div className="business-info-form">
@@ -302,7 +227,7 @@ function App() {
         <div className="services-carousel">
           <button className="carousel-btn prev" onClick={prevSlide}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
           <div className="carousel-track">
@@ -318,7 +243,7 @@ function App() {
                   >
                     <i className="fas fa-info-circle"></i> Learn More
                   </button>
-                  <button className="book-now">
+                  <button className="book-now" onClick={() => window.location.href = '/build'}>
                     <i className="fas fa-play"></i> Get Started
                   </button>
                 </div>
@@ -327,7 +252,7 @@ function App() {
           </div>
           <button className="carousel-btn next" onClick={nextSlide}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
         </div>
@@ -339,16 +264,16 @@ function App() {
           </p>
           <div className="stats">
             <div className="stat-item">
-              <div className="stat-number animate-count" data-target="50000">0</div>
+              <div className="stat-number animate-count" data-target="9000">0</div>
               <div className="stat-label">Happy Users</div>
             </div>
             <div className="stat-item">
-              <div className="stat-number animate-count" data-target="150">0</div>
+              <div className="stat-number animate-count" data-target="800">0</div>
               <div className="stat-label">Templates</div>
             </div>
             <div className="stat-item">
               <div className="stat-number animate-count" data-target="24">0</div>
-              <div className="stat-label">/7 Support</div>
+              <div className="stat-label">Employees</div>
             </div>
           </div>
           <a
@@ -377,16 +302,16 @@ function App() {
         <div className="footer-content">
           <div className="footer-logo">Eezix</div>
           <div className="footer-links">
-            <a href="#"><i className="fas fa-star"></i> Features</a>
-            <a href="#"><i className="fas fa-tag"></i> Pricing</a>
-            <a href="#"><i className="fas fa-palette"></i> Templates</a>
-            <a href="#"><i className="fas fa-headset"></i> Support</a>
+            <Link to="#"><i className="fas fa-star"></i> Features</Link>
+            <Link to="#"><i className="fas fa-tag"></i> Pricing</Link>
+            <Link to="#"><i className="fas fa-palette"></i> Templates</Link>
+            <Link to="#"><i className="fas fa-headset"></i> Support</Link>
           </div>
           <div className="footer-social">
-            <a href="#"><i className="fab fa-facebook"></i></a>
-            <a href="#"><i className="fab fa-twitter"></i></a>
-            <a href="#"><i className="fab fa-instagram"></i></a>
-            <a href="#"><i className="fab fa-linkedin"></i></a>
+            <Link to="#"><i className="fab fa-facebook"></i></Link>
+            <Link to="#"><i className="fab fa-twitter"></i></Link>
+            <Link to="#"><i className="fab fa-instagram"></i></Link>
+            <Link to="#"><i className="fab fa-linkedin"></i></Link>
           </div>
         </div>
         <div className="footer-bottom">

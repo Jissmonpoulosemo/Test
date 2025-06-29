@@ -1,0 +1,280 @@
+/* Modern Transparent Aesthetic */
+:root {
+  --primary: rgba(74, 107, 255, 0.8);
+  --primary-solid: #4a6bff;
+  --primary-hover: rgba(74, 107, 255, 1);
+  --text: rgba(255, 255, 255, 0.9);
+  --text-light: rgba(255, 255, 255, 0.7);
+  --text-lighter: rgba(255, 255, 255, 0.5);
+  --bg: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  --glass: rgba(255, 255, 255, 0.05);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.1);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  --blur: blur(10px);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.transparent-container {
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Glass Card */
+.glass-card {
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border-radius: 16px;
+  border: 1px solid var(--glass-border);
+  padding: 40px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+
+/* Brand Header */
+.brand-header {
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.brand-name {
+  font-size: 2.5rem;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--primary-solid), #6a8eff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: 8px;
+}
+
+.welcome-text {
+  font-size: 1.1rem;
+  color: var(--text-light);
+  font-weight: 400;
+}
+
+/* Terms Notice */
+.terms-notice {
+  font-size: 0.75rem;
+  color: var(--text-lighter);
+  text-align: center;
+  margin-bottom: 24px;
+  line-height: 1.5;
+}
+
+.divider {
+  height: 1px;
+  background: var(--glass-border);
+  margin: 24px 0;
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text);
+}
+
+.section-subtitle {
+  font-size: 0.9rem;
+  color: var(--text-light);
+  margin-bottom: 24px;
+}
+
+/* Form Elements */
+.transparent-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.input-label {
+  font-size: 0.85rem;
+  color: var(--text-light);
+  font-weight: 500;
+}
+
+.glass-input {
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 0.95rem;
+  color: var(--text);
+  transition: all 0.3s ease;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: rgba(0, 0, 0, 0.3);
+  box-shadow: 0 0 0 2px rgba(74, 107, 255, 0.2);
+}
+
+/* Form Options */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+}
+
+.option-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  color: var(--text-light);
+  position: relative;
+}
+
+.option-checkbox input {
+  opacity: 0;
+  position: absolute;
+}
+
+.checkmark {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.option-checkbox input:checked ~ .checkmark {
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+.checkmark:after {
+  content: "✓";
+  color: white;
+  font-size: 10px;
+  display: none;
+}
+
+.option-checkbox input:checked ~ .checkmark:after {
+  display: block;
+}
+
+.accent-link {
+  color: var(--primary-solid);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.accent-link:hover {
+  color: var(--text);
+}
+
+/* Buttons */
+.primary-btn {
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 8px;
+}
+
+.primary-btn:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+/* Saved Account */
+.saved-account {
+  text-align: center;
+  margin: 24px 0;
+  font-size: 0.85rem;
+  color: var(--text-light);
+}
+
+.saved-email {
+  color: var(--primary-solid);
+  font-weight: 500;
+}
+
+/* Social Divider */
+.social-divider {
+  display: flex;
+  align-items: center;
+  margin: 24px 0;
+  color: var(--text-lighter);
+  font-size: 0.8rem;
+}
+
+.social-divider::before,
+.social-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.divider-text {
+  padding: 0 12px;
+}
+
+/* Social Button */
+.social-btn {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.facebook-btn {
+  color: #1877f2;
+}
+
+.social-icon {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
