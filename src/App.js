@@ -1,323 +1,615 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import './App.css';
+/* ========================= APP.JS ========================= */
+
+import React, { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [showPopup, setShowPopup] = useState(false);
-  const [popupContent, setPopupContent] = useState({});
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [user, setUser] = useState(null);
-  const [businessInfo, setBusinessInfo] = useState({
-    name: '',
-    type: '',
-    collected: false
+  /* ================= STATES ================= */
+
+  const [activeCategory, setActiveCategory] =
+    useState("Spices");
+
+  const [search, setSearch] = useState("");
+
+  const [cart, setCart] = useState([]);
+
+  const [customer, setCustomer] = useState({
+    name: "",
+    phone: "",
+    address: "",
   });
-  const [scrolled, setScrolled] = useState(false);
 
-  const services = [
-    
-    {
-      id: 1,
-      title: "E-Commerce Solutions",
-      description: "Launch your online store with powerful e-commerce tools and seamless payment integrations.",
-      image: "https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-    },
-    {
-      id: 2,
-      title: "SEO Optimization",
-      description: "Built-in SEO tools to help your website rank higher on search engines and attract more visitors.",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-    },
-    {
-      id: 3,
-      title: "Hosting & Security",
-      description: "Reliable hosting with enterprise-grade security to keep your website fast and protected.",
-      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
-    },
-    {
-      id: 4,
-      title: "Custom Templates",
-      description: "Choose from hundreds of professionally designed templates for any industry.",
-      image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60"
+  /* ================= FALLBACK IMAGE ================= */
+
+  const fallbackImage =
+    "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1200&auto=format&fit=crop";
+
+  /* ================= CATEGORIES ================= */
+
+  const categories = [
+    "Spices",
+    "Vegetables",
+    "Fruits",
+    "Dry Fruits",
+    "Combos",
+  ];
+
+  /* ================= PRODUCTS ================= */
+
+  const products = {
+    /* ================= SPICES ================= */
+
+    Spices: [
+  {
+    name: "Organic Turmeric Powder",
+    price: 149,
+    oldPrice: 240,
+    rating: 4.8,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Black Pepper",
+    price: 220,
+    oldPrice: 320,
+    rating: 4.9,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Red Chilli Powder",
+    price: 180,
+    oldPrice: 280,
+    rating: 4.7,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Green Cardamom",
+    price: 490,
+    oldPrice: 680,
+    rating: 4.9,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Cloves (Grambu)",
+    price: 320,
+    oldPrice: 450,
+    rating: 4.8,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Cinnamon Sticks",
+    price: 280,
+    oldPrice: 390,
+    rating: 4.7,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Star Anise",
+    price: 240,
+    oldPrice: 340,
+    rating: 4.6,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Coriander Powder",
+    price: 120,
+    oldPrice: 180,
+    rating: 4.5,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Garam Masala",
+    price: 190,
+    oldPrice: 260,
+    rating: 4.8,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Mustard Seeds",
+    price: 90,
+    oldPrice: 140,
+    rating: 4.5,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Fenugreek Seeds",
+    price: 110,
+    oldPrice: 170,
+    rating: 4.4,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+
+  {
+    name: "Fennel Seeds",
+    price: 130,
+    oldPrice: 200,
+    rating: 4.6,
+    image:
+      "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+  },
+],
+
+    /* ================= VEGETABLES ================= */
+
+    Vegetables: [
+      {
+        name: "Fresh Tomato",
+        price: 49,
+        oldPrice: 70,
+        rating: 4.5,
+        image:
+          "https://images.unsplash.com/photo-1546470427-e5ac89cd0b5b?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "Organic Carrot",
+        price: 89,
+        oldPrice: 120,
+        rating: 4.8,
+        image:
+          "https://images.unsplash.com/photo-1447175008436-054170c2e979?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "Broccoli",
+        price: 99,
+        oldPrice: 150,
+        rating: 4.6,
+        image:
+          "https://images.unsplash.com/photo-1459411621453-7b03977f4bfc?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "Capsicum",
+        price: 79,
+        oldPrice: 120,
+        rating: 4.4,
+        image:
+          "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "Fresh Onion",
+        price: 69,
+        oldPrice: 100,
+        rating: 4.6,
+        image:
+          "https://images.unsplash.com/photo-1508747703725-719777637510?q=80&w=1200&auto=format&fit=crop",
+      },
+    ],
+
+    /* ================= FRUITS ================= */
+
+    Fruits: [
+      {
+        name: "Fresh Apple",
+        price: 199,
+        oldPrice: 280,
+        rating: 4.9,
+        image:
+          "https://images.unsplash.com/photo-1567306226416-28f0efdc88ce?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "Orange",
+        price: 120,
+        oldPrice: 180,
+        rating: 4.7,
+        image:
+          "https://images.unsplash.com/photo-1547514701-42782101795e?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "Banana",
+        price: 69,
+        oldPrice: 100,
+        rating: 4.5,
+        image:
+          "https://images.unsplash.com/photo-1571771894821-ce9b6c11b08e?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "Watermelon",
+        price: 149,
+        oldPrice: 220,
+        rating: 4.6,
+        image:
+          "https://images.unsplash.com/photo-1563114773-84221bd62daa?q=80&w=1200&auto=format&fit=crop",
+      },
+    ],
+
+    /* ================= DRY FRUITS ================= */
+
+    "Dry Fruits": [
+      {
+        name: "Premium Cashew",
+        price: 540,
+        oldPrice: 760,
+        rating: 4.9,
+        image:
+          "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "California Almond",
+        price: 690,
+        oldPrice: 920,
+        rating: 4.8,
+        image:
+           "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "Pistachio",
+        price: 740,
+        oldPrice: 980,
+        rating: 4.9,
+        image:
+           "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop",
+      },
+    ],
+
+    /* ================= COMBOS ================= */
+
+    Combos: [
+      {
+        name: "Vegetable Combo Box",
+        price: 399,
+        oldPrice: 699,
+        rating: 5.0,
+        image:
+          "https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=1200&auto=format&fit=crop",
+      },
+
+      {
+        name: "Spice Combo Pack",
+        price: 499,
+        oldPrice: 899,
+        rating: 4.9,
+        image:
+          "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?q=80&w=1200&auto=format&fit=crop",
+      },
+    ],
+  };
+
+  /* ================= ADD TO CART ================= */
+
+  const addToCart = (item) => {
+    const exists = cart.find(
+      (product) => product.name === item.name
+    );
+
+    if (!exists) {
+      setCart([...cart, item]);
     }
-  ];
-
-  const businessTypes = [
-    "E-Commerce",
-    "Portfolio",
-    "Blog",
-    "Business Website",
-    "Restaurant",
-    "Non-Profit",
-    "Educational",
-    "Other"
-  ];
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
-
-      // Animation on scroll
-      const elements = document.querySelectorAll('.animate-on-scroll');
-      elements.forEach(element => {
-        const elementPosition = element.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-        if (elementPosition < windowHeight - 100) {
-          element.classList.add('visible');
-        }
-      });
-    };
-
-    // Count animation
-    const animateCount = () => {
-      const countElements = document.querySelectorAll('.animate-count');
-      countElements.forEach(element => {
-        const target = parseInt(element.getAttribute('data-target'));
-        let count = 0;
-        const duration = 2000;
-        const increment = target / (duration / 16);
-        const timer = setInterval(() => {
-          count += increment;
-          if (count >= target) {
-            clearInterval(timer);
-            count = target;
-          }
-          element.textContent = Math.floor(count);
-        }, 16);
-      });
-    };
-
-    // Initialize animations
-    handleScroll();
-    animateCount();
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const openPopup = (title, description) => {
-    setPopupContent({ title, description });
-    setShowPopup(true);
   };
 
-  const closePopup = () => {
-    setShowPopup(false);
+  /* ================= REMOVE FROM CART ================= */
+
+  const removeFromCart = (name) => {
+    const updatedCart = cart.filter(
+      (item) => item.name !== name
+    );
+
+    setCart(updatedCart);
   };
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev === services.length - 3 ? 0 : prev + 1));
+  /* ================= TOTAL ================= */
+
+  const total = cart.reduce(
+    (sum, item) => sum + item.price,
+    0
+  );
+
+  /* ================= ORDER ================= */
+
+  const placeOrder = () => {
+    if (
+      !customer.name ||
+      !customer.phone ||
+      !customer.address
+    ) {
+      alert("Please fill customer details");
+      return;
+    }
+
+    if (cart.length === 0) {
+      alert("Cart is empty");
+      return;
+    }
+
+    const items = cart
+      .map(
+        (item, i) =>
+          `${i + 1}. ${item.name} - ₹${item.price}`
+      )
+      .join("\n");
+
+    const message = `🛒 *D-Home ORDER*
+
+${items}
+
+💰 Total: ₹${total}
+
+👤 Name: ${customer.name}
+📞 Phone: ${customer.phone}
+📍 Address: ${customer.address}`;
+
+    window.open(
+      `https://wa.me/919633228352?text=${encodeURIComponent(
+        message
+      )}`,
+      "_blank"
+    );
   };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev === 0 ? services.length - 3 : prev - 1));
-  };
+  /* ================= FILTER PRODUCTS ================= */
 
-  const handleBusinessInfoSubmit = (e) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const info = Object.fromEntries(formData.entries());
-
-    setBusinessInfo({
-      name: info.businessName,
-      type: info.businessType,
-      collected: true
-    });
-  };
-
-  const logout = () => {
-    setUser(null);
-    setBusinessInfo({ name: '', type: '', collected: false });
-  };
+  const filteredProducts =
+    products[activeCategory].filter((item) =>
+      item.name
+        .toLowerCase()
+        .includes(search.toLowerCase())
+    );
 
   return (
-    <div className="App">
-      <header className={`header ${scrolled ? 'scrolled' : ''}`}>
-        <div className="logo">Eezix</div>
-        <nav className="nav">
-          {user ? (
-            <div className="user-info">
-              <span>Welcome, {user.name}</span>
-              {businessInfo.collected && (
-                <span className="business-info">
-                  {businessInfo.name} ({businessInfo.type})
-                </span>
-              )}
-              <button onClick={logout} className="logout-btn">
-                <i className="fas fa-sign-out-alt"></i> Logout
-              </button>
-            </div>
-          ) : (
-            <div className="auth-buttons">
-              <Link to="/login" className="auth-btn login-btn">
-                <i className="fas fa-sign-in-alt"></i> Login
-              </Link>
-              <Link to="/signup" className="auth-btn signup-btn">
-                <i className="fas fa-user-plus"></i> Sign Up
-              </Link>
-            </div>
-          )}
-        </nav>
-      </header>
+    <div className="app">
+      {/* ================= NAVBAR ================= */}
 
-      <section className="hero">
-        <div className="hero-content">
-          <h1 className="hero-title animate-fadeIn">Build Your Dream Website</h1>
-          <p className="hero-subtitle animate-fadeIn animate-delay-1">No coding needed. Just drag, drop, and launch!</p>
-          <div className="hero-buttons animate-fadeIn animate-delay-2">
-            <Link to="/build" className="hero-btn primary">
-              <i className="fas fa-rocket"></i> Build Yours Now
-            </Link>
-            <button className="hero-btn secondary" onClick={() => {
-              window.scrollTo({
-                top: document.querySelector('.container').offsetTop - 100,
-                behavior: 'smooth'
-              });
-            }}>
-              <i className="fas fa-search"></i> Explore Features
-            </button>
-          </div>
-        </div>
-        <div className="hero-image animate-float">
-          <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Website Builder" />
-        </div>
-      </section>
-
-      <div className="container animate-on-scroll">
-        {user && !businessInfo.collected && (
-          <div className="business-info-popup">
-            <div className="business-info-form">
-              <h2>Tell Us About Your Business</h2>
-              <p>This helps us customize your experience and recommend the best features for your needs.</p>
-              <form onSubmit={handleBusinessInfoSubmit}>
-                <div className="form-group">
-                  <label><i className="fas fa-building"></i> Business Name</label>
-                  <input
-                    type="text"
-                    name="businessName"
-                    placeholder="Enter your business name"
-                    required
-                    value={businessInfo.name}
-                    onChange={(e) => setBusinessInfo({ ...businessInfo, name: e.target.value })}
-                  />
-                </div>
-                <div className="form-group">
-                  <label><i className="fas fa-briefcase"></i> Business Type</label>
-                  <select
-                    name="businessType"
-                    required
-                    value={businessInfo.type}
-                    onChange={(e) => setBusinessInfo({ ...businessInfo, type: e.target.value })}
-                  >
-                    <option value="">Select your business type</option>
-                    {businessTypes.map((type, index) => (
-                      <option key={index} value={type}>{type}</option>
-                    ))}
-                  </select>
-                </div>
-                <button type="submit" className="submit-btn">
-                  <i className="fas fa-arrow-right"></i> Continue
-                </button>
-              </form>
-            </div>
-          </div>
-        )}
-
-        <h1 className="main-title">Eezix Website Builder</h1>
-
-        <div className="services-carousel">
-          <button className="carousel-btn prev" onClick={prevSlide}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M15 18L9 12L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          <div className="carousel-track">
-            {services.slice(currentSlide, currentSlide + 3).map((service, index) => (
-              <div className={`card animate-card-${index}`} key={service.id}>
-                <img src={service.image} alt={service.title} />
-                <h3>{service.title}</h3>
-                <p>{service.description}</p>
-                <div className="buttons">
-                  <button
-                    className="read-more"
-                    onClick={() => openPopup(service.title, service.description)}
-                  >
-                    <i className="fas fa-info-circle"></i> Learn More
-                  </button>
-                  <button className="book-now" onClick={() => window.location.href = '/build'}>
-                    <i className="fas fa-play"></i> Get Started
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-          <button className="carousel-btn next" onClick={nextSlide}>
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M9 18L15 12L9 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
+      <div className="navbar">
+        <div className="logo">
+          🛒 D-Home
         </div>
 
-        <div className="about animate-on-scroll">
-          <h2>About Eezix</h2>
-          <p className="about-desc">
-            Eezix is revolutionizing website creation with our powerful yet simple platform. Founded in 2020, we've helped over 50,000 businesses establish their online presence.
-          </p>
-          <div className="stats">
-            <div className="stat-item">
-              <div className="stat-number animate-count" data-target="9000">0</div>
-              <div className="stat-label">Happy Users</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number animate-count" data-target="800">0</div>
-              <div className="stat-label">Templates</div>
-            </div>
-            <div className="stat-item">
-              <div className="stat-number animate-count" data-target="24">0</div>
-              <div className="stat-label">Employees</div>
-            </div>
+        <div className="search-box">
+          <input
+            type="text"
+            placeholder="Search groceries..."
+            value={search}
+            onChange={(e) =>
+              setSearch(e.target.value)
+            }
+          />
+        </div>
+
+        <div className="nav-icons">
+          ❤️
+
+          <div className="cart-count">
+            🛍️ {cart.length}
           </div>
-          <a
-            href="https://www.youtube.com/@eezix.ai-freewebsitebuilder"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <button className="youtube-btn">
-              <i className="fab fa-youtube"></i> Watch Demo
-            </button>
-          </a>
         </div>
       </div>
 
-      {showPopup && (
-        <div className="popup">
-          <div className="popup-inner">
-            <span className="close" onClick={closePopup}>×</span>
-            <h2>{popupContent.title}</h2>
-            <p>{popupContent.description}</p>
-          </div>
-        </div>
-      )}
+      {/* ================= OFFER BAR ================= */}
 
-      <footer className="footer animate-on-scroll">
-        <div className="footer-content">
-          <div className="footer-logo">Eezix</div>
-          <div className="footer-links">
-            <Link to="#"><i className="fas fa-star"></i> Features</Link>
-            <Link to="#"><i className="fas fa-tag"></i> Pricing</Link>
-            <Link to="#"><i className="fas fa-palette"></i> Templates</Link>
-            <Link to="#"><i className="fas fa-headset"></i> Support</Link>
-          </div>
-          <div className="footer-social">
-            <Link to="#"><i className="fab fa-facebook"></i></Link>
-            <Link to="#"><i className="fab fa-twitter"></i></Link>
-            <Link to="#"><i className="fab fa-instagram"></i></Link>
-            <Link to="#"><i className="fab fa-linkedin"></i></Link>
+      <div className="offer-bar">
+        🔥 BIG SUMMER SALE | FREE DELIVERY ABOVE ₹499
+      </div>
+
+      {/* ================= HERO ================= */}
+
+      <div className="hero">
+        <div className="hero-overlay">
+          <div className="hero-content">
+            <span>
+              Premium Grocery Marketplace
+            </span>
+
+            <h1>
+              Fresh Spices &
+              <br />
+              Organic Vegetables
+            </h1>
+
+            <p>
+              Real Spices. Real Aroma.
+            </p>
+
+            <button>
+              Explore Now
+            </button>
           </div>
         </div>
-        <div className="footer-bottom">
-          © {new Date().getFullYear()} Eezix. All rights reserved.
-        </div>
-      </footer>
+      </div>
+
+      {/* ================= CATEGORIES ================= */}
+
+      <div className="categories">
+        {categories.map((cat) => (
+          <button
+            key={cat}
+            className={
+              activeCategory === cat
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setActiveCategory(cat)
+            }
+          >
+            {cat}
+          </button>
+        ))}
+      </div>
+
+      {/* ================= PRODUCTS ================= */}
+
+      <div className="products-grid">
+        {filteredProducts.map(
+          (item, index) => {
+            const isAdded = cart.find(
+              (product) =>
+                product.name === item.name
+            );
+
+            return (
+              <div
+                className="card"
+                key={index}
+              >
+                <div className="discount">
+                  {Math.floor(
+                    ((item.oldPrice -
+                      item.price) /
+                      item.oldPrice) *
+                      100
+                  )}
+                  % OFF
+                </div>
+
+                <img
+                  src={item.image}
+                  alt={item.name}
+                  loading="lazy"
+                  onError={(e) =>
+                    (e.target.src =
+                      fallbackImage)
+                  }
+                />
+
+                <div className="card-content">
+                  <div className="rating">
+                    ⭐ {item.rating}
+                  </div>
+
+                  <h3>{item.name}</h3>
+
+                  <div className="price-row">
+                    <span className="price">
+                      ₹{item.price}
+                    </span>
+
+                    <span className="old-price">
+                      ₹{item.oldPrice}
+                    </span>
+                  </div>
+
+                  <button
+                    className={
+                      isAdded
+                        ? "added-btn"
+                        : ""
+                    }
+                    onClick={() =>
+                      addToCart(item)
+                    }
+                  >
+                    {isAdded
+                      ? "✔ Added To Cart"
+                      : "🛒 Add To Cart"}
+                  </button>
+                </div>
+              </div>
+            );
+          }
+        )}
+      </div>
+
+      {/* ================= CART ================= */}
+
+      <div className="cart-section">
+        <h2>🛍️ Your Cart</h2>
+
+        {cart.length === 0 ? (
+          <p>No items added</p>
+        ) : (
+          cart.map((item, i) => (
+            <div
+              className="cart-item"
+              key={i}
+            >
+              <div>
+                <h4>{item.name}</h4>
+
+                <p>₹{item.price}</p>
+              </div>
+
+              <button
+                className="remove-btn"
+                onClick={() =>
+                  removeFromCart(
+                    item.name
+                  )
+                }
+              >
+                ✖
+              </button>
+            </div>
+          ))
+        )}
+
+        <h3>Total : ₹{total}</h3>
+
+        <input
+          type="text"
+          placeholder="Your Name"
+          onChange={(e) =>
+            setCustomer({
+              ...customer,
+              name: e.target.value,
+            })
+          }
+        />
+
+        <input
+          type="text"
+          placeholder="Phone Number"
+          onChange={(e) =>
+            setCustomer({
+              ...customer,
+              phone: e.target.value,
+            })
+          }
+        />
+
+        <textarea
+          placeholder="Delivery Address"
+          onChange={(e) =>
+            setCustomer({
+              ...customer,
+              address: e.target.value,
+            })
+          }
+        />
+
+        <button
+          className="checkout-btn"
+          onClick={placeOrder}
+        >
+          Order via WhatsApp
+        </button>
+      </div>
+
+      {/* ================= FOOTER ================= */}
+
+      <div className="footer">
+        <h2>D-Home</h2>
+
+        <p>
+          Real Spices. Real Aroma.
+        </p>
+      </div>
     </div>
   );
 }
