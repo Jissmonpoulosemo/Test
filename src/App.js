@@ -181,10 +181,6 @@ ${items}
 📍 Address: ${customer.address}`;
 
     window.open(
-      `https://wa.me/919633228352?text=${encodeURIComponent(message)}`,
-      "_blank"
-    );
-  };
 
   /* ================= FILTER ================= */
   const filteredProducts = products[activeCategory].filter((item) =>
