@@ -27,7 +27,6 @@ function App() {
   /* +/- count per product on the card (default = 1) */
   const [itemCount, setItemCount] = useState({});
 
-  const getPack   = (name) => packSizes[selectedPack[name] ?? 2];
   const getCount  = (name) => itemCount[name] ?? 1;
 
   const setPack  = (name, idx) =>
@@ -84,9 +83,9 @@ function App() {
     ],
 
     "Dry Fruits": [
-      { name: "Premium Cashew",   price: 540, oldPrice: 760, rating: 4.9, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop" },
-      { name: "California Almond",price: 690, oldPrice: 920, rating: 4.8, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop" },
-      { name: "Pistachio",        price: 740, oldPrice: 980, rating: 4.9, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop" },
+      { name: "Premium Cashew",    price: 540, oldPrice: 760, rating: 4.9, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop" },
+      { name: "California Almond", price: 690, oldPrice: 920, rating: 4.8, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop" },
+      { name: "Pistachio",         price: 740, oldPrice: 980, rating: 4.9, image: "https://images.unsplash.com/photo-1509440159596-0249088772ff?q=80&w=1200&auto=format&fit=crop" },
     ],
 
     Combos: [
@@ -97,17 +96,17 @@ function App() {
 
   /* ================= ADD TO CART ================= */
   const addToCart = (item) => {
-    const packIdx  = selectedPack[item.name] ?? 2;
-    const pack     = packSizes[packIdx];
-    const count    = getCount(item.name);
+    const packIdx   = selectedPack[item.name] ?? 2;
+    const pack      = packSizes[packIdx];
+    const count     = getCount(item.name);
     const unitPrice = calcPrice(item.price, packIdx);
-    const cartKey  = `${item.name}__${pack.label}`;
+    const cartKey   = `${item.name}__${pack.label}`;
 
-    if (cart.find((p) => p.cartKey === cartKey)) return;   // already in cart
+    if (cart.find((p) => p.cartKey === cartKey)) return; // already in cart
 
     setCart([...cart, {
       ...item,
-      packLabel:  pack.label,
+      packLabel: pack.label,
       packIdx,
       unitPrice,
       count,
@@ -181,6 +180,10 @@ ${items}
 📍 Address: ${customer.address}`;
 
     window.open(
+      `https://wa.me/919633228352?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
+  };
 
   /* ================= FILTER ================= */
   const filteredProducts = products[activeCategory].filter((item) =>
@@ -243,13 +246,13 @@ ${items}
       {/* ===== PRODUCTS GRID ===== */}
       <div className="products-grid">
         {filteredProducts.map((item, index) => {
-          const packIdx   = selectedPack[item.name] ?? 2;
-          const pack      = packSizes[packIdx];
-          const count     = getCount(item.name);
-          const unitPrice = calcPrice(item.price, packIdx);
+          const packIdx        = selectedPack[item.name] ?? 2;
+          const pack           = packSizes[packIdx];
+          const count          = getCount(item.name);
+          const unitPrice      = calcPrice(item.price, packIdx);
           const totalCardPrice = unitPrice * count;
-          const cartKey   = `${item.name}__${pack.label}`;
-          const isAdded   = !!cart.find((p) => p.cartKey === cartKey);
+          const cartKey        = `${item.name}__${pack.label}`;
+          const isAdded        = !!cart.find((p) => p.cartKey === cartKey);
 
           return (
             <div className="card" key={index}>
@@ -387,11 +390,11 @@ ${items}
         <p>Freshness Delivered Daily</p>
         <div className="footer-divider" />
         <p className="footer-credit">
-          🌿 Website Designed & Developed by{" "}
-          <span className="footer-author">Jissmon Poulose M O </span>
+          🌿 Website Designed &amp; Developed by{" "}
+          <span className="footer-author">Jissmon Poulose M O</span>
         </p>
         <p className="footer-sub">
-          Bringing the finest spices & fresh produce to your doorstep — from the heart of Kerala.
+          Bringing the finest spices &amp; fresh produce to your doorstep — from the heart of Kerala.
         </p>
       </div>
 
